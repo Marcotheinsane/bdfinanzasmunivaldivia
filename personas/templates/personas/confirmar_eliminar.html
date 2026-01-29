@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block titulo %}Confirmar eliminación{% endblock %}
+
+{% block contenido %}
+<h1>Confirmar eliminación</h1>
+
+<div class="alert alert-warning">
+    <p>¿Está seguro que desea eliminar a esta persona?</p>
+    <p><strong>{{ persona.nombre }}</strong> ({{ persona.rut }})</p>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <form method="post">
+            {% csrf_token %}
+            <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-danger">Eliminar definitivamente</button>
+                <a href="{% url 'lista_personas' %}" class="btn btn-secondary">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,46 @@
+steps:
+  # Build de la imagen Docker
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - 'build'
+      - '-t'
+      - 'gcr.io/$PROJECT_ID/personas-app:$SHORT_SHA'
+      - '-t'
+      - 'gcr.io/$PROJECT_ID/personas-app:latest'
+      - '.'
+
+  # Push a Google Container Registry
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - 'push'
+      - 'gcr.io/$PROJECT_ID/personas-app:$SHORT_SHA'
+
+  # Deploy a Cloud Run
+  - name: 'gcr.io/cloud-builders/gke-deploy'
+    args:
+      - 'run'
+      - '--filename=.'
+      - '--image=gcr.io/$PROJECT_ID/personas-app:$SHORT_SHA'
+      - '--location=us-central1'
+      - '--namespace=default'
+
+  # Alternativa más simple con gcloud (descomenta para usar esto)
+  # - name: 'gcr.io/cloud-builders/gcloud'
+  #   args:
+  #     - 'run'
+  #     - 'deploy'
+  #     - 'personas-app'
+  #     - '--image=gcr.io/$PROJECT_ID/personas-app:$SHORT_SHA'
+  #     - '--region=us-central1'
+  #     - '--platform=managed'
+  #     - '--allow-unauthenticated'
+  #     - '--set-env-vars=DEBUG=False'
+
+images:
+  - 'gcr.io/$PROJECT_ID/personas-app:$SHORT_SHA'
+  - 'gcr.io/$PROJECT_ID/personas-app:latest'
+
+options:
+  machineType: 'N1_HIGHCPU_8'
+
+timeout: '1800s'

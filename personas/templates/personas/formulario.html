@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block titulo %}{{ accion }} Persona{% endblock %}
+
+{% block contenido %}
+<h1>{{ accion }} Persona</h1>
+
+<div class="row">
+    <div class="col-md-6">
+        <form method="post" novalidate>
+            {% csrf_token %}
+            
+            {% for field in form %}
+                <div class="mb-3">
+                    {{ field.label_tag }}
+                    {{ field }}
+                    {% if field.help_text %}
+                        <small class="form-text text-muted d-block">{{ field.help_text }}</small>
+                    {% endif %}
+                    {% if field.errors %}
+                        <div class="alert alert-danger mt-2 p-2">
+                            {% for error in field.errors %}
+                                <p class="mb-0">{{ error }}</p>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+
+            <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-primary">Guardar</button>
+                <a href="{% url 'lista_personas' %}" class="btn btn-secondary">Cancelar</a>
+            </div>
+        </form>
+    </div>
+
+    <div class="col-md-6">
+        <div class="alert alert-info">
+            <h5>Información</h5>
+            <ul class="mb-0">
+                <li><strong>Nombre:</strong> Requerido</li>
+                <li><strong>RUT:</strong> Requerido, único (ej: 12345678-9)</li>
+                <li><strong>Organización:</strong> Opcional</li>
+                <li><strong>Teléfono:</strong> Opcional</li>
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}
