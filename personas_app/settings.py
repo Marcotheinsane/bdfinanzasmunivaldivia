@@ -61,7 +61,7 @@ TEMPLATES = [
     },
 ]
 
-DATABASES = {
+"""DATABASES = {
     'default': dj_database_url.config(
         default=os.getenv('DATABASE_URL', 'postgresql://postgres:postgres@localhost:5432/personas_db'),
         conn_max_age=600,
@@ -70,6 +70,16 @@ DATABASES = {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
+}"""
+
+DATABASES={
+        'default': dj_database_url.config(
+            # Esta funcion de aca busca automaticamente la variable de entorno DATABASE_URL asi no me da error
+            # tracellback en render.com
+            default='postgresql://postgres:postgres@localhost:5432/personas_db',
+            conn_health_checks=True,
+            conn_max_age=600,
+        )
 }
 
 AUTH_PASSWORD_VALIDATORS = [
