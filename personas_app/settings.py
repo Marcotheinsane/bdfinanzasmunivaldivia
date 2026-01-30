@@ -12,10 +12,14 @@ SECRET_KEY = os.getenv('SECRET_KEY', 'dev-secret-key')
 # DEBUG controlled by env for safety in production
 DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',')
 
 # CloudSQL proxy para Cloud Run
 GCP_PROJECT = os.getenv('GCP_PROJECT', '')
+
+# Supabase Database URL
+SUPABASE_DB_URL = os.getenv('DATABASE_URL', '')
+IS_RENDER = os.getenv('RENDER', 'false').lower() == 'true'
 
 INSTALLED_APPS = [
     'django.contrib.contenttypes',
@@ -60,10 +64,13 @@ TEMPLATES = [
 
 DATABASES = {
     'default': dj_database_url.config(
-        default='postgresql://postgres:2077@localhost:5433/personas_db',
+        default=os.getenv('DATABASE_URL', 'postgresql://postgres:postgres@localhost:5432/personas_db'),
         conn_max_age=600,
-        ssl_require=False
-    )
+        ssl_require=IS_RENDER  # SSL requiere en Render/Supabase
+    ) if os.getenv('DATABASE_URL') else {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    }
 }
 
 AUTH_PASSWORD_VALIDATORS = [

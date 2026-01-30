@@ -27,8 +27,12 @@ COPY . .
 # Recopilar archivos estáticos
 RUN python manage.py collectstatic --noinput --clear
 
-# Cloud Run requiere escuchar en puerto 8080
-EXPOSE 8080
+# Render requiere escuchar en puerto 10000 (configurable via PORT)
+EXPOSE 10000
 
-# Comando para correr Gunicorn en Cloud Run
-CMD ["gunicorn", "--bind", "0.0.0.0:8080", "--workers", "4", "--worker-class", "sync", "--timeout", "60", "personas_app.wsgi:application"]
+# Crear usuario no-root para seguridad
+RUN useradd -m appuser && chown -R appuser:appuser /app
+USER appuser
+
+# Comando para correr Gunicorn en Render
+CMD ["gunicorn", "--bind", "0.0.0.0:${PORT:-10000}", "--workers", "3", "--worker-class", "sync", "--timeout", "120", "--access-logfile", "-", "--error-logfile", "-", "personas_app.wsgi:application"]

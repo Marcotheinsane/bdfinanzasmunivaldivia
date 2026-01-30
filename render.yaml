@@ -1,0 +1,22 @@
+services:
+  - type: web
+    name: personas-app
+    env: python
+    plan: free
+    buildCommand: "pip install -r requirements.txt && python manage.py migrate && python manage.py collectstatic --noinput"
+    startCommand: "gunicorn --bind 0.0.0.0:${PORT} --workers 3 --worker-class sync --timeout 120 personas_app.wsgi:application"
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DEBUG
+        value: false
+      - key: RENDER
+        value: true
+      - key: ALLOWED_HOSTS
+        scope: RUN_TIME
+        value: ${RENDER_EXTERNAL_HOSTNAME}
+      - key: DATABASE_URL
+        scope: RUN_TIME
+        # Add your Supabase connection string here
