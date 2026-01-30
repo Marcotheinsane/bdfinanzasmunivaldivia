@@ -7,9 +7,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # por defecto no funcional para produccion SECRET_KEY = 'django-insecure-local-app-key-no-secrets-here'
 
-SECRET_KEY = os.getenv('SECRET_KEY', 'dev-secret-key')
+SECRET_KEY = os.getenv('SECRET_KEY', 'yosoyfranchescovirgolinireydecolina01')
 
-# DEBUG controlled by env for safety in production
 DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
 ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',')

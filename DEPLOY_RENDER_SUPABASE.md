@@ -8,6 +8,7 @@
    ```
    postgresql://postgres:password@db.supabase.co:5432/postgres?sslmode=require
    ```
+   postgresql://postgres:[1kira2077@1]@db.vklsxnqlebhkpppmodwr.supabase.co:5432/postgres
 
 ## Paso 2: Preparar el Repositorio
 
@@ -52,7 +53,7 @@
 En la sección de "Environment Variables", añade:
 
 ```
-SECRET_KEY=<genera-una-key-segura>
+SECRET_KEY= yosoyfranchescovirgolinireydecolina01
 DEBUG=False
 RENDER=true
 ALLOWED_HOSTS=<tu-app-name>.onrender.com

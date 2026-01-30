@@ -1,7 +1,6 @@
-# Usar imagen slim de Python 3.11
 FROM python:3.11-slim
 
-# Configurar variables de entorno
+# Configurar variables de entorno para Python y pip
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
     PIP_NO_CACHE_DIR=1 \
